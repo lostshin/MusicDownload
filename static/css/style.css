@@ -1,0 +1,13 @@
+body {
+  padding:20px 40px;
+}
+.navbar {
+  margin-bottom: 20px;
+}
+.btn-form{
+  float:right;
+  margin-right:10px;
+}
+.card{
+  margin:10px 0px;
+}

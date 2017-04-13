@@ -1,0 +1,90 @@
+{% extends "base.html"%}
+{% block content%}
+<p>{{current_page}}</p>
+{% for item in range (0,21)%}
+{%if '{}'.format(item) in all_item%}
+{%if all_item.get('{}'.format(item))['img'] != ''%}
+<div class="card">
+    <div class="card-block">
+        <a href="{{all_item.get('{}'.format(item))['link']}}"><h4 class="card-title">
+            {{all_item.get('{}'.format(item))['title']}}</h4></a>
+    </div>
+    <div class="card-block">
+        <a href="{{all_item.get('{}'.format(item))['link']}}"><img class="card-img-top"
+                                                                   src="{{all_item.get('{}'.format(item))['img']}}"
+                                                                   alt="Card image cap" width="196" height="110"></a>
+        <p class="card-text">
+            <small class="text-muted">
+                {{all_item.get('{}'.format(item))['time']}}
+            </small>
+        </p>
+        <form action="/download" target="_blank">
+            <button type="submit" class="btn btn-warning" name="value"
+                    value="MP3&{{all_item.get('{}'.format(item))['link']}}">MP3
+            </button>
+            <button type="submit" class="btn btn-danger" name="value"
+                    value="MP4&{{all_item.get('{}'.format(item))['link']}}">MP4
+            </button>
+        </form>
+        {% if session['account']%}
+        {% if "{}".format(all_item.get('{}'.format(item))['link']) in favorite_video%}
+            <button disabled type="button" class="btn btn-warning">Added</button>
+        {%endif%}
+        {% if "{}".format(all_item.get('{}'.format(item))['link']) not in favorite_video%}
+        <form action="/favorite" method="post">
+            <input type="hidden" name="url" value="{{url}}">
+            <input type="hidden" name="title" value="{{all_item.get('{}'.format(item))['title']}}">
+            <input type="hidden" name="link" value="{{all_item.get('{}'.format(item))['link']}}">
+            <input type="hidden" name="img" value="{{all_item.get('{}'.format(item))['img']}}">
+            <button type="submit" class="btn btn-warning btn-form"><i class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;Favorite
+            </button>
+        </form>
+        {%endif%}
+        {%endif%}
+    </div>
+</div>
+{%endif%}
+{%endif%}
+{%endfor%}
+<center>
+    <nav aria-label="..." style="width: 480px">
+        <ul class="pagination">
+            {%if current_page !='1'%}
+            <li class="page-item">
+                <a class="page-link"
+                   href="{{all_page.get('{}'.format(int(current_page)-1))}}&current_page={{int(current_page)-1}}"
+                   aria-label="Last">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true">上一頁</span>
+                </a>
+            </li>
+            {%endif%}
+            {% for page in range (int(current_page)-3,int(current_page))%}
+            {%if '{}'.format(page) in all_page%}
+            <li class="page-item"><a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a>
+            </li>
+            {%endif%}
+            {%endfor%}
+
+            <li class="page-item active">
+                <a class="page-link" href="#">{{current_page}}<span class="sr-only">(current)</span></a>
+            </li>
+            {% for page in range (int(current_page),int(current_page)+8)%}
+            {%if '{}'.format(page) in all_page%}
+            <li class="page-item"><a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a>
+            </li>
+            {%endif%}
+            {%endfor%}
+            <li class="page-item">
+                <a class="page-link"
+                   href="{{all_page.get('{}'.format(int(current_page)+1))}}&current_page={{int(current_page)+1}}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span aria-hidden="true">下一頁</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</center>
+{%endblock%}
